@@ -25,7 +25,7 @@ export default ({navigation}) => {
           inputStyle = {{color: "white"}}
           containerStyle = {{backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 8, height: 55, paddingTop: 8, marginTop: 10}}
           errorStyle = {{height: 0, flex: 0}}
-          autoCapitalize = {false}
+          autoCapitalize = "none"
           keyboardType = "email-address"
         />
         <Text style = {styles.textConfirmEmail}>{translate("Tendrás que confirmar esta dirección de correo")}</Text>

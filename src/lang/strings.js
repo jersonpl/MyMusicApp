@@ -19,4 +19,29 @@ export default ([
     "es": "Crear cuenta",
     "en": ""
   },
+  {
+    "key": "titleApp",
+    "es": "MyMusicApp",
+    "en": "MyMusicApp"
+  },
+  {
+    "key": "favs",
+    "es": "Favoritos",
+    "en": "Favorites"
+  },
+  {
+    "key": "settings",
+    "es": "Preferenecias",
+    "en": "Preferences"
+  },
+  {
+    "key": "songs",
+    "es": "canciones",
+    "en": "songs"
+  },
+  {
+    "key": "logout",
+    "es": "Cerrar sesión",
+    "en": "Sign off",
+  }
 ]);

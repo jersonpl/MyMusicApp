@@ -4,11 +4,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Auth from '../screens/Auth';
 import Home from '../screens/Home';
-import ScreenOptionsTab from './ScreenOptionsTab';
 import RNBootSplash from 'react-native-bootsplash';
 import SignIn from '../screens/Auth/SignIn';
 import translate from '../lang/translate';
 import SignUp from '../screens/Auth/SignUp';
+import colors from '../values/colors';
+import { Icon, Text } from 'react-native-elements';
+import { View } from 'react-native';
+import Settings from '../screens/Settings';
+import screenOptionsTab from './screenOptionsTab';
+import header from './header';
+import Favs from '../screens/Favs';
 
 
 const Stack = createNativeStackNavigator();
@@ -40,22 +46,24 @@ const SignedInStack = ({navigation}) => {
   return(
     <Stack.Navigator initialRouteName = "BottonTab">
       <Stack.Screen name = "BottonTab" component = {BottonTab} options={{headerShown : false}} />
+      <Stack.Screen name = "Settings" component = {Settings} options = {{headerTransparent: true, title: translate("settings"), headerTintColor: "white", headerBackTitleVisible: false}} />
     </Stack.Navigator>
   )
 }
 
 const BottonTab = () => {
   return(
-    <Tab.Navigator initialRouteName = {"HomeStack"} screenOptions = {ScreenOptionsTab}>
-      <Tab.Screen name = "HomeStack" component = {HomeStack} options = {{headerShown: false}}  />
+    <Tab.Navigator initialRouteName = {"HomeStack"} screenOptions = {screenOptionsTab}>
+      <Tab.Screen name = "HomeStack" component = {HomeStack} options = {(props) => header({...props, title: translate("titleApp")})}/>
+      <Tab.Screen name = "MyMusic" component = {MyMusicStack} options = {(props) => header({...props, title: translate("favs")})}/>
     </Tab.Navigator>
   )
 }
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator initialRouteName = "Home">
-      <Stack.Screen name = "Home" component = {Home} options={{headerShown : false}} />
+    <Stack.Navigator initialRouteName = "Home" screenOptions = {{}}>
+      <Stack.Screen name = "Home" component = {Home} options={{ headerShown: false }}/>
     </Stack.Navigator>
   )
 }
@@ -63,7 +71,7 @@ const HomeStack = () => {
 const MyMusicStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name = "MyMusicStack" />
+      <Stack.Screen name = "MyMusicStack" component = {Favs} options = {{headerShown: false}} />
     </Stack.Navigator>
   )
 }
