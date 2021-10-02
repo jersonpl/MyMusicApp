@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, TextPropTypes } from "react-native";
+import { Text, TextProps } from 'react-native';
 
-const _Text = (props) => (
-  <Text {...props} />
-)
-
-_Text.propTypes = TextPropTypes
+class _Text extends React.Component<TextProps> {
+  render(){
+    return <Text {...this.props} />
+  }
+}
 
 export default _Text;

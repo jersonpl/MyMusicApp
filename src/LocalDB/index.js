@@ -8,7 +8,7 @@ export default class LocalDB {
 
   tables = {
     auth: `auth-${key}`,
-    user: `user-${key}`,
+    userProfile: `user-profile-${key}`,
   }
 
   checkIfDate(value){

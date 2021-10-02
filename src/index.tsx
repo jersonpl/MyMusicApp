@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { UserProfile } from './interfaces';
+import LocalDB from './LocalDB';
 import { NavigationRoot } from './navigation';
+import { saveUserProfile } from './redux/actions/userProfile';
+
+const localDB = new LocalDB();
 
 export default () => {
+  const dispatch = useDispatch();
   const [log, setLog] = useState({log: false, verifySesion: false});
 
   useEffect(() => {
@@ -9,11 +16,19 @@ export default () => {
   }, []);
 
   const init = async () => {
-    setLog(prev => ({...prev, verifySesion: true}));
+    let auth = await localDB.findOne(localDB.tables.auth);
+    if(auth && auth.access_token){
+      let userProfile: UserProfile = await localDB.findOne(localDB.tables.userProfile);
+      dispatch(saveUserProfile(userProfile));
+      setLog(prev => ({...prev, verifySesion: true, log: true}));
+    }else{
+      await localDB.deleteAllDB();
+      setLog(prev => ({...prev, verifySesion: true}));
+    }
   }
 
   if(!log.verifySesion) return null;
   return (
-    <NavigationRoot log = {true} />
+    <NavigationRoot log = {log} />
   )
 }

@@ -43,5 +43,15 @@ export default ([
     "key": "logout",
     "es": "Cerrar sesión",
     "en": "Sign off",
+  },
+  {
+    "key": "login_with_spotify",
+    "es": "Iniciar con Spotify",
+    "en": "Signin with Spotify"
+  },
+  {
+    "key": "your_library",
+    "es": "Tu biblioteca",
+    "en": "Your library"
   }
 ]);
