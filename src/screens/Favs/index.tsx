@@ -9,24 +9,23 @@ import errorRequest from '../../utils/errorRequest';
 import request from '../../utils/request';
 import TrackComponent from '../../components/Track';
 import { Track } from '../../interfaces';
+import { changeTracksOffset, getTracks, removeTrackFromFav } from '../../redux/actions/tracks';
+import { TrackReducer } from '../../redux/reducers/tracks.reducer';
 
 export default ({navigation}) => {
-  const [tracks, setTracks] = useState([]);
-  const [infoPage, setInfoPage] = useState({offset: 0, total: 0});
+  const dispatch = useDispatch()
+  const [tracks] = useSelector(({tracks} : {tracks: TrackReducer}) => [tracks]);
 
 
   useEffect(()=> {
-    init();
-  }, [infoPage.offset]);
+    dispatch(getTracks({navigation, tracks}));
+  }, []);
 
-  const init = async () => {
-    const resTracks = await request({link: api.tracks, method: "GET", body: {offset: infoPage.offset, limit: 50}});
-    if(resTracks.success){
-      let _tracks = resTracks.response.items.map(item => item.track);
-      setTracks(prev => [...prev, ..._tracks]);
-      setInfoPage(prev => ({...prev, total: resTracks.response.total}))
+  const addOrRemoveFav = ({isFav, track} : {isFav: boolean, track: Track}) => {
+    if(isFav){
+      dispatch(removeTrackFromFav({track, tracks}));
     }else{
-      errorRequest({response: resTracks, navigation});
+
     }
   }
 
@@ -34,16 +33,16 @@ export default ({navigation}) => {
     <BasicComponent>
       <View style = {styles.container}>
         <View style = {styles.containerSongs}>
-          <Text style = {styles.songsText}>{infoPage.total} {translate("songs")}</Text>
+          <Text style = {styles.songsText}>{tracks.total} {translate("songs")}</Text>
         </View>
         <FlatList 
-          data = {tracks}
+          data = {tracks.items}
           keyExtractor={(item, index) => index}
-          renderItem = {({item, index})=> <TrackComponent data = {item} />}
+          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {addOrRemoveFav} />}
           onEndReached = {()=> {
-            if(infoPage.total > infoPage.offset) setInfoPage(prev => ({...prev, offset: tracks.length}))
+            if(tracks.total > tracks.items.length) dispatch(changeTracksOffset({tracks, offset: tracks.items.length, navigation}))
           }}
-          onEndReachedThreshold={3}
+          onEndReachedThreshold={1}
           initialNumToRender={12} 
           showsVerticalScrollIndicator = {false}    
         />

@@ -12,35 +12,30 @@ import { Album, Playlist } from '../../interfaces';
 import FastImage from 'react-native-fast-image';
 import PlaylistComponent from '../../components/Playlist';
 import translate from '../../lang/translate';
+import { changePlaylistsOffset, getPlaylists } from '../../redux/actions/playlists';
+import { PlaylistReducer } from '../../redux/reducers/playlists.reducer';
 
 export default ({navigation}) => {
   const dispatch = useDispatch();
+  const [playlists] = useSelector(({playlists} : {playlists: PlaylistReducer}) => [playlists]);
+  const [infoPage, setInfoPage] = useState({offset: playlists.length, total: 0});
   const [isLoading, setIsLoading] = useState(false);
-  const [playlists, setPlaylist] = useState<Playlist[]>([]);
 
   useEffect(()=> {
-    init();
+    dispatch(getPlaylists({navigation, playlists}));
   },[]);
-
-  const init = async () => {
-    setIsLoading(true);
-    let resPlaylists = await request({link: api.playlists});
-    if(resPlaylists.success){
-      setPlaylist(resPlaylists.response.items);
-    }else{
-      errorRequest({response: resPlaylists, navigation})
-    }
-    setIsLoading(false);
-  }
   
   return (
     <BasicComponent isLoading = {isLoading}>
       <Text style = {styles.title}>{translate("your_library")}</Text>
       <FlatList 
-        data = {playlists}
+        data = {playlists.items}
         keyExtractor={(item, index) => index}
         renderItem = {({item, index})=> <PlaylistComponent key = {index} data = {item} onPress = {()=> navigation.navigate("Playlist", {playlist: item})} />}
-        onEndReached = {()=> {}}
+        onEndReached = {()=> {
+          if(playlists.total > playlists.items.length) dispatch(changePlaylistsOffset({playlists, offset: playlists.items.length, navigation}))
+        }}
+        contentContainerStyle = {{paddingBottom: 10}}
         onEndReachedThreshold={0.5}
         initialNumToRender={6} 
         showsVerticalScrollIndicator = {false}    

@@ -9,7 +9,7 @@ import request from '../../utils/request';
 import api from '../../utils/api';
 import errorRequest from '../../utils/errorRequest';
 import { useDispatch } from 'react-redux';
-import { saveUserProfile } from '../../redux/actions/userProfile';
+import { getUserProfile } from '../../redux/actions/userProfile';
 
 const localDB = new LocalDB();
 
@@ -23,21 +23,9 @@ export default ({navigation}) => {
     const params = parseURLParams(url);
     if(params.access_token){
       setIsLoading(true);
-
       await localDB.saveData(localDB.tables.auth, params);
-
-      const resUserProfile = await request({link: api.profile});
-      console.log(resUserProfile);
-      if(resUserProfile.success){
-        let userProfile: UserProfile = resUserProfile.response;
-        console.log({userProfile});
-        dispatch(saveUserProfile(userProfile));
-        await localDB.saveData(localDB.tables.userProfile, userProfile);
-        navigation.reset({ index: 0, routes: [{ name: 'SignedInStack' }]});
-      }else{
-        errorRequest({response: resUserProfile, navigation});
-      }
-      
+      dispatch(getUserProfile({navigation}));
+      navigation.reset({ index: 0, routes: [{ name: 'SignedInStack' }]});
       setIsLoading(false);
     }
   };

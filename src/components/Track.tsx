@@ -14,8 +14,9 @@ class _Track extends React.PureComponent {
 
   render(){
 
-    let isFav = true;
     const data: Track = this.props.data;
+    const isFromPlaylist: boolean = this.props.isFromPlaylist;
+    const addOrRemoveFav: ({isFav, track} : {isFav?: boolean, track: Track}) => void = this.props.addOrRemoveFav;
 
     return (
       <View style = {styles.container}>
@@ -34,9 +35,12 @@ class _Track extends React.PureComponent {
           <Text style = {styles.titleText} numberOfLines = {1} >{data.name}</Text>
           <Text style = {styles.albumText} numberOfLines = {1} >{data.album.name}</Text>
         </View>
-        <TouchableOpacity style = {styles.favIcon} onPress = {()=> {}}>
-          <Icon name = {isFav ? "favorite" : "favorite-outline"} color = {isFav ? colors.primary : "white"} size = {18} />
-        </TouchableOpacity>
+        {
+          !isFromPlaylist &&
+          <TouchableOpacity style = {styles.favIcon} onPress = {()=> addOrRemoveFav({isFav: data.isFav, track: data})}>
+            <Icon name = {data.isFav ? "favorite" : "favorite-outline"} color = {data.isFav ? colors.primary : "white"} size = {18} />
+          </TouchableOpacity>
+        }
       </View>
     )
   }

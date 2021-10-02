@@ -36,6 +36,7 @@ export interface Track {
   track_number: number
   uri: string
   album: Album
+  isFav?: boolean
 }
 
 export interface Album {

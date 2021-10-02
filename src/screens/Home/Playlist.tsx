@@ -11,7 +11,9 @@ import colors from '../../values/colors';
 import no_photo_user from '../../assets/images/no_photo_user.png';
 import request from '../../utils/request';
 import errorRequest from '../../utils/errorRequest';
-import Track from '../../components/Track';
+import TrackComponent from '../../components/Track';
+import api from '../../utils/api';
+import { Track } from '../../interfaces';
 
 const { width } = Dimensions.get("screen");
 
@@ -28,6 +30,8 @@ export default ({navigation, route}) => {
     if(resPlayList.success){
       let _playlist: Playlist = {...resPlayList.response, tracks: {...resPlayList.response.tracks, items: resPlayList.response.tracks.items.map(item => ({...item.track}))} }
       setPlayList(_playlist);
+      let _tracksItems = await checkIsLiked(_playlist.tracks.items!);
+      setPlayList(prev => ({...prev, tracks: {...prev.tracks, items: _tracksItems}}));
     }else{
       errorRequest({response: resPlayList, navigation});
     }
@@ -39,7 +43,7 @@ export default ({navigation, route}) => {
       <FlatList 
         data = {playList.tracks.items || []}
         keyExtractor={(item, index) => index}
-        renderItem = {({item, index})=> <Track key = {index} data = {item} />}
+        renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} />}
         contentContainerStyle = {{paddingBottom: 10}}
         onEndReached = {()=> {}}
         ListHeaderComponent = {()=> (
@@ -69,6 +73,24 @@ export default ({navigation, route}) => {
       />
     </BasicComponent>
   )
+}
+
+const checkIsLiked = async (tracks: Track[]): Promise<Track[]> => {
+  let _tracks: Track[] = JSON.parse(JSON.stringify(tracks))
+  let list = []
+  const len = Math.ceil(_tracks.length/50)
+  for(var i = 0; i < len; i++){
+    list.push(_tracks.splice(0, 50).map(item => item.id));
+  }
+  let responseList: boolean[] = [];
+  for(var listItem of list){
+    let likedTrack = await request({link: api.tracks_contains, method: "GET", body: {ids: listItem}});
+    if(likedTrack.success){
+      responseList = [...responseList, ...likedTrack.response];
+    }
+  }
+  let final = tracks.map((item, index) => ({...item, isFav: responseList[index]}));
+  return final;
 }
 
 const styles = StyleSheet.create({
