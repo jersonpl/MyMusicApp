@@ -8,15 +8,34 @@ import TrackComponent from '../../components/Track';
 import { Track } from '../../interfaces';
 import { addOrRemoveTrack, changeTracksOffset, getTracks, removeTrackFromFav } from '../../redux/actions/tracks';
 import { TrackReducer } from '../../redux/reducers/tracks.reducer';
+import Player from '../../components/Player';
+import { saveTrackPlayer } from '../../redux/actions/trackPlayer';
+import { TrackPlayerReducer } from '../../redux/reducers/trackPlayer.reducer';
+
+let ss = {url: 'https://p.scdn.co/mp3-preview/9100a200837a871f6f1c2cda42b2b5749cf9f11f?cid=9ca64e0015de458f9448b08016d05321',
+  title: 'Title',
+  artist: 'Album',
+  artwork: 'https://arrestedmotion.com/wp-content/uploads/2015/10/JB_Purpose-digital-deluxe-album-cover_lr.jpg',
+  duration: 30}
 
 export default ({navigation}) => {
   const dispatch = useDispatch()
-  const [tracks] = useSelector(({tracks} : {tracks: TrackReducer}) => [tracks]);
+  const [tracks, trackPlayer] = useSelector(({tracks, trackPlayer} : {tracks: TrackReducer, trackPlayer: TrackPlayerReducer}) => [tracks, trackPlayer]);
 
 
   useEffect(()=> {
     dispatch(getTracks({navigation, tracks}));
   }, []);
+
+  const onPlayerTrack = (track: Track) => {
+    dispatch(saveTrackPlayer({state: "play", track: {
+      url: ss.url,
+      title: track.name,
+      artist: track.artists.length > 0 ? track.artists[0].name : "",
+      artwork: track.album.images.length > 0 ? track.album.images[0].url : "",
+      duration: 30,
+    }}))
+  }
 
   return (
     <BasicComponent>
@@ -27,7 +46,7 @@ export default ({navigation}) => {
         <FlatList 
           data = {tracks.items}
           keyExtractor={(item, index) => index}
-          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {({track, isFav} : {track: Track, isFav: boolean})=> dispatch(addOrRemoveTrack({track, isFav, tracks}))} />}
+          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {({track, isFav} : {track: Track, isFav: boolean})=> dispatch(addOrRemoveTrack({track, isFav, tracks}))} onPress = {onPlayerTrack} />}
           onEndReached = {()=> {
             if(tracks.total > tracks.items.length) dispatch(changeTracksOffset({tracks, offset: tracks.items.length, navigation}))
           }}
@@ -36,6 +55,7 @@ export default ({navigation}) => {
           showsVerticalScrollIndicator = {false}    
         />
       </View>
+      <Player />
     </BasicComponent>
   )
 }

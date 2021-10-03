@@ -16,6 +16,7 @@ import Favs from '../screens/Favs';
 import { useSelector } from '../redux/useSelector';
 import { UserProfile } from '../interfaces';
 import Playlist from '../screens/Home/Playlist';
+import Player from '../components/Player';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,10 +54,13 @@ const SignedInStack = ({navigation}) => {
 
 const BottonTab = () => {
   return(
-    <Tab.Navigator initialRouteName = {"HomeStack"} screenOptions = {screenOptionsTab}>
-      <Tab.Screen name = "HomeStack" component = {HomeStack} options = {{headerShown: false, headerTitleAlign: "left"}} />
-      <Tab.Screen name = "MyMusic" component = {MyMusicStack} options = {{headerShown: false}}  />
-    </Tab.Navigator>
+    <>
+      
+      <Tab.Navigator initialRouteName = {"HomeStack"} screenOptions = {screenOptionsTab}>
+        <Tab.Screen name = "HomeStack" component = {HomeStack} options = {{headerShown: false, headerTitleAlign: "left"}} />
+        <Tab.Screen name = "MyMusic" component = {MyMusicStack} options = {{headerShown: false}}  />
+      </Tab.Navigator>
+    </>
   )
 }
 

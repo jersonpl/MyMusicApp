@@ -29,6 +29,6 @@ export default () => {
 
   if(!log.verifySesion) return null;
   return (
-    <NavigationRoot log = {log} />
+    <NavigationRoot log = {log.log} />
   )
 }

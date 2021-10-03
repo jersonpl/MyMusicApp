@@ -5,7 +5,7 @@ import translate from '../lang/translate';
 import colors from '../values/colors';
 import Logo from '../components/Logo';
 
-export default ({route} : {route: any}) : any => ({ 
+export default ({route, Player} : {route: any, Player: any}) : any => ({ 
   tabBarIcon : ({focused} : {focused: boolean})=> {
     switch(route.name){
       case 'HomeStack':

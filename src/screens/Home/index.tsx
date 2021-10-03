@@ -14,6 +14,7 @@ import PlaylistComponent from '../../components/Playlist';
 import translate from '../../lang/translate';
 import { changePlaylistsOffset, getPlaylists } from '../../redux/actions/playlists';
 import { PlaylistReducer } from '../../redux/reducers/playlists.reducer';
+import Player from '../../components/Player';
 
 export default ({navigation}) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=> {
-    dispatch(getPlaylists({navigation, playlists}));
+    //dispatch(getPlaylists({navigation, playlists}));
   },[]);
   
   return (
@@ -40,6 +41,7 @@ export default ({navigation}) => {
         initialNumToRender={6} 
         showsVerticalScrollIndicator = {false}    
       />
+      <Player />
     </BasicComponent>
   )
 }

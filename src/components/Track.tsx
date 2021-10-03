@@ -17,9 +17,10 @@ class _Track extends React.PureComponent {
     const data: Track = this.props.data;
     const isFromPlaylist: boolean = this.props.isFromPlaylist;
     const addOrRemoveFav: ({isFav, track} : {isFav?: boolean, track: Track}) => void = this.props.addOrRemoveFav;
+    const onPress: (track: Track) => void = this.props.onPress;
 
     return (
-      <View style = {styles.container}>
+      <TouchableOpacity style = {styles.container} onPress = {()=> onPress ? onPress(data) : {}}>
         <View style = {styles.imageContainer}>
           {
             data.album.images.length > 0 ? 
@@ -41,7 +42,7 @@ class _Track extends React.PureComponent {
             <Icon name = {data.isFav ? "favorite" : "favorite-outline"} color = {data.isFav ? colors.primary : "white"} size = {18} />
           </TouchableOpacity>
         }
-      </View>
+      </TouchableOpacity>
     )
   }
 }

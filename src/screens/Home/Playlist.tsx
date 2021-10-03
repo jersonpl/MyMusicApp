@@ -17,6 +17,7 @@ import { Track } from '../../interfaces';
 import { useSelector } from '../../redux/useSelector';
 import { addOrRemoveTrack } from '../../redux/actions/tracks';
 import { useDispatch } from 'react-redux';
+import Player from '../../components/Player';
 
 const { width } = Dimensions.get("screen");
 
@@ -86,6 +87,7 @@ export default ({navigation, route}) => {
         initialNumToRender={6} 
         showsVerticalScrollIndicator = {false}    
       />
+      <Player />
     </BasicComponent>
   )
 }
