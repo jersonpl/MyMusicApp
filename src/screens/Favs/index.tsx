@@ -18,6 +18,26 @@ let ss = {url: 'https://p.scdn.co/mp3-preview/9100a200837a871f6f1c2cda42b2b5749c
   artwork: 'https://arrestedmotion.com/wp-content/uploads/2015/10/JB_Purpose-digital-deluxe-album-cover_lr.jpg',
   duration: 30}
 
+  const play = ({
+    spotify_uri,
+    playerInstance: {
+      _options: {
+        getOAuthToken
+      }
+    }
+  }) => {
+    getOAuthToken(access_token => {
+      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris: [spotify_uri] }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${access_token}`
+        },
+      });
+    });
+  };
+
 export default ({navigation}) => {
   const dispatch = useDispatch()
   const [tracks, trackPlayer] = useSelector(({tracks, trackPlayer} : {tracks: TrackReducer, trackPlayer: TrackPlayerReducer}) => [tracks, trackPlayer]);
