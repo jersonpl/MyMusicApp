@@ -5,7 +5,7 @@ import translate from '../../lang/translate';
 import colors from '../../values/colors';
 
 import { ApiConfig  } from 'react-native-spotify-remote';
-import AppContext from '../../AppContext';
+import AppContext from '../../context/AppContext';
 
 
 

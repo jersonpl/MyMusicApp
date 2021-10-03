@@ -10,9 +10,9 @@ const deviceLanguage = Platform.OS === 'ios'
 export const lang = deviceLanguage.split("_")[0];
 
 
-export default (keyword) => {
+export default (keyword: string) => {
   var languaje = deviceLanguage.split("_")[0];
-  var text = "";
+  var text: string | null = "";
 
   text = getString(keyword, languaje);
   if(!text) text = getString(keyword, "es");
@@ -21,7 +21,7 @@ export default (keyword) => {
   return String(text_translated).replace("@empty"," ");
 }
 
-const getString = (keyword, languaje) => {
+const getString = (keyword: string, languaje: string): string | null => {
   const text = strings.find(item => item.key === keyword);
   if(text) return text[languaje];
   return null

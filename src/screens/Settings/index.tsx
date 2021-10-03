@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import AppContext from '../../AppContext';
+import AppContext from '../../context/AppContext';
 import { Button, Text } from '../../components/CustomBasic';
 import BasicComponent from "../../components/CustomBasic/BasicComponent"
 import translate from '../../lang/translate';

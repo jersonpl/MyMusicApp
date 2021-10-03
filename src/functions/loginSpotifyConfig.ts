@@ -1,4 +1,3 @@
-
 const endpoint = 'https://accounts.spotify.com/authorize';
 const clientID = '9ca64e0015de458f9448b08016d05321';
 export const redirectUri = 'https://www.jersonpl.com/spotify-login-callback';
