@@ -24,17 +24,26 @@ export const getTracks = ({navigation, tracks} : {navigation: any, tracks: Track
     let resTracks = await request({link: api.tracks, method: "GET", body: {offset: tracks.offset, limit: 30}});
     if(resTracks.success){
       let _tracks: Track[] = resTracks.response.items.map(item => ({...item.track, isFav: true}));
-      dispatch(setTracks({items: [...tracks.items, ..._tracks], total: resTracks.response.total, offset: tracks.offset}));
+      dispatch(setTracks({items: [...(tracks.offset === 0 ? [] : tracks.items), ..._tracks], total: resTracks.response.total, offset: tracks.offset}));
     }else{
       errorRequest({response: resTracks, navigation})
     }
   }
 }
 
-export const removeTrackFromFav = ({track, tracks} : {track: Track, tracks: TrackReducer}) => {
+export const addOrRemoveTrack = ({track, tracks, isFav} : {track: Track, tracks: TrackReducer, isFav}) => {
   return (dispatch) => {
     let _tracks: Track[] = tracks.items;
-    _tracks.splice(tracks.items.findIndex(e => e.id === track.id),1);
-    dispatch(setTracks({...tracks, items: _tracks}));
+    let total = tracks.total;
+    if(isFav){
+      total -= 1;
+      _tracks.splice(tracks.items.findIndex(e => e.id === track.id),1);
+      request({link: api.tracks, method: "DELETE", body: {ids: [track.id]}});
+    }else{
+      total += 1;
+      _tracks.unshift({...track, isFav: true});
+      request({link: api.tracks, method: "PUT", body: {ids: [track.id]}});
+    }
+    dispatch(setTracks({...tracks, items: _tracks, total}));
   }
 }

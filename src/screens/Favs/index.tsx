@@ -4,12 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '../../components/CustomBasic';
 import BasicComponent from "../../components/CustomBasic/BasicComponent"
 import translate from '../../lang/translate';
-import api from '../../utils/api';
-import errorRequest from '../../utils/errorRequest';
-import request from '../../utils/request';
 import TrackComponent from '../../components/Track';
 import { Track } from '../../interfaces';
-import { changeTracksOffset, getTracks, removeTrackFromFav } from '../../redux/actions/tracks';
+import { addOrRemoveTrack, changeTracksOffset, getTracks, removeTrackFromFav } from '../../redux/actions/tracks';
 import { TrackReducer } from '../../redux/reducers/tracks.reducer';
 
 export default ({navigation}) => {
@@ -21,14 +18,6 @@ export default ({navigation}) => {
     dispatch(getTracks({navigation, tracks}));
   }, []);
 
-  const addOrRemoveFav = ({isFav, track} : {isFav: boolean, track: Track}) => {
-    if(isFav){
-      dispatch(removeTrackFromFav({track, tracks}));
-    }else{
-
-    }
-  }
-
   return (
     <BasicComponent>
       <View style = {styles.container}>
@@ -38,7 +27,7 @@ export default ({navigation}) => {
         <FlatList 
           data = {tracks.items}
           keyExtractor={(item, index) => index}
-          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {addOrRemoveFav} />}
+          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {({track, isFav} : {track: Track, isFav: boolean})=> dispatch(addOrRemoveTrack({track, isFav, tracks}))} />}
           onEndReached = {()=> {
             if(tracks.total > tracks.items.length) dispatch(changeTracksOffset({tracks, offset: tracks.items.length, navigation}))
           }}

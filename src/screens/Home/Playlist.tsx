@@ -14,11 +14,16 @@ import errorRequest from '../../utils/errorRequest';
 import TrackComponent from '../../components/Track';
 import api from '../../utils/api';
 import { Track } from '../../interfaces';
+import { useSelector } from '../../redux/useSelector';
+import { addOrRemoveTrack } from '../../redux/actions/tracks';
+import { useDispatch } from 'react-redux';
 
 const { width } = Dimensions.get("screen");
 
 export default ({navigation, route}) => {
+  const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
+  const [tracks] = useSelector(({tracks}) => [tracks])
   const [playList, setPlayList] = useState<Playlist>(route.params.playlist);
 
   useEffect(() => {
@@ -37,13 +42,23 @@ export default ({navigation, route}) => {
     }
   }
 
+  const addOrRemoveFav = ({isFav, track} : {isFav?: boolean, track: Track}) => {
+    console.log({isFav, track})
+    dispatch(addOrRemoveTrack({tracks, track, isFav}));
+    setPlayList(prev => {
+      let indexTrack = prev.tracks.items!.findIndex(a => a.id == track.id);
+      prev.tracks.items![indexTrack].isFav = !isFav;
+      return prev;
+    })
+  }
+
 
   return (
     <BasicComponent isLoading = {isLoading} >
       <FlatList 
         data = {playList.tracks.items || []}
         keyExtractor={(item, index) => index}
-        renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} />}
+        renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {addOrRemoveFav}  />}
         contentContainerStyle = {{paddingBottom: 10}}
         onEndReached = {()=> {}}
         ListHeaderComponent = {()=> (

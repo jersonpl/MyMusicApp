@@ -26,7 +26,7 @@ export default async ({link, body, method}: {link: string, body?: any, method?: 
       }
       link += querys.join("&");
     }else{
-      requestOptions.body = body;
+      requestOptions.body = JSON.stringify(body);
     }
   }
 
@@ -35,15 +35,19 @@ export default async ({link, body, method}: {link: string, body?: any, method?: 
     requestOptions.headers.Authorization = `${auth.token_type} ${auth.access_token}`;
   }
 
-  console.log(link, requestOptions.headers.Authorization);
+  console.log(link);
 
   let resFetch = await fetch(link, requestOptions);
   if(resFetch.status == 401){
     //let resResfres = fetch(api.refreshToken, {body: JSON.stringify({refresh_token: ""})}).then(res => res.json());
     return ({success: false, noAuth: true});
   }else if(resFetch.status == 200){
-    let response = await resFetch.json();
-    return ({success: true, response});
+    try {
+      let response = await resFetch.json();
+      return ({success: true, response}); 
+    } catch (error) {
+      return ({success: true});
+    }
   }else{
     return ({success: false});
   }
