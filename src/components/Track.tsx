@@ -10,8 +10,6 @@ import NoteIcon from '../assets/svg/note.svg';
 
 class _Track extends React.PureComponent {
 
-
-
   render(){
 
     const data: Track = this.props.data;

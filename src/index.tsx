@@ -18,7 +18,6 @@ export default () => {
   const init = async () => {
     let auth = await localDB.findOne(localDB.tables.auth);
     if(auth && auth.access_token){
-      let userProfile: UserProfile = await localDB.findOne(localDB.tables.userProfile);
       dispatch(getUserProfile({}));
       setLog(prev => ({...prev, verifySesion: true, log: true}));
     }else{
@@ -29,6 +28,6 @@ export default () => {
 
   if(!log.verifySesion) return null;
   return (
-    <NavigationRoot log = {log} />
+    <NavigationRoot log = {log.log} />
   )
 }

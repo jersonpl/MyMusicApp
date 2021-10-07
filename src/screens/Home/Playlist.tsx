@@ -17,6 +17,9 @@ import { Track } from '../../interfaces';
 import { useSelector } from '../../redux/useSelector';
 import { addOrRemoveTrack } from '../../redux/actions/tracks';
 import { useDispatch } from 'react-redux';
+import constants from '../../values/constants';
+import checkIfTrackIsLiked from '../../functions/checkIfTrackIsLiked';
+import formatPlaylist from '../../functions/formatPlaylist';
 
 const { width } = Dimensions.get("screen");
 
@@ -33,9 +36,11 @@ export default ({navigation, route}) => {
   const init = async () => {
     let resPlayList = await request({link: playList.href});
     if(resPlayList.success){
-      let _playlist: Playlist = {...resPlayList.response, tracks: {...resPlayList.response.tracks, items: resPlayList.response.tracks.items.map(item => ({...item.track}))} }
-      setPlayList(_playlist);
-      let _tracksItems = await checkIsLiked(_playlist.tracks.items!);
+
+      const reformedPlaylist = formatPlaylist(resPlayList.response);
+      setPlayList(reformedPlaylist);
+
+      const _tracksItems = await checkIfTrackIsLiked(reformedPlaylist.tracks.items!);
       setPlayList(prev => ({...prev, tracks: {...prev.tracks, items: _tracksItems}}));
     }else{
       errorRequest({response: resPlayList, navigation});
@@ -43,10 +48,9 @@ export default ({navigation, route}) => {
   }
 
   const addOrRemoveFav = ({isFav, track} : {isFav?: boolean, track: Track}) => {
-    console.log({isFav, track})
     dispatch(addOrRemoveTrack({tracks, track, isFav}));
     setPlayList(prev => {
-      let indexTrack = prev.tracks.items!.findIndex(a => a.id == track.id);
+      let indexTrack = prev.tracks.items!.findIndex(_track => _track.id == track.id);
       prev.tracks.items![indexTrack].isFav = !isFav;
       return prev;
     })
@@ -59,12 +63,12 @@ export default ({navigation, route}) => {
         data = {playList.tracks.items || []}
         keyExtractor={(item, index) => index}
         renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {addOrRemoveFav}  />}
-        contentContainerStyle = {{paddingBottom: 10}}
+        contentContainerStyle = {styles.contentContainerStyleFlatList}
         onEndReached = {()=> {}}
         ListHeaderComponent = {()=> (
           <View style = {styles.container}>
             <View style = {styles.imageContainer}>
-              { playList.images.length > 0 ? 
+              { playList.images.length >= constants.MIN_LEN_IMAGES_TO_SHOW ? 
                 <FastImage source = {{uri: playList.images[0].url}} style = {{width: "100%", height: "100%"}} resizeMode = {FastImage.resizeMode.cover}  /> : 
                 <NoteIcon width = {50} height = {50} /> 
               }
@@ -72,9 +76,9 @@ export default ({navigation, route}) => {
             <View style = {styles.infoContainer}>
               <Text style = {styles.title} numberOfLines = {1} >{playList.name}</Text>
               <View style = {styles.userContainer}>            
-                {playList.owner.images && playList.owner.images.length > 0 ?
-                  <FastImage source = {{uri: playList.owner.images[0].url}} style = {{width: 20, height: 20, borderRadius: 10}} /> :
-                  <Image source = {no_photo_user} style = {{width: 20, height: 20, borderRadius: 10}} />
+                {playList.owner.images && playList.owner.images.length >= constants.MIN_LEN_IMAGES_TO_SHOW ?
+                  <FastImage source = {{uri: playList.owner.images[0].url}} style = {styles.imagePlaylist} /> :
+                  <Image source = {no_photo_user} style = {styles.imagePlaylist} />
                 }
                 <Text style = {styles.nameOwner} numberOfLines = {1} >{playList.owner.display_name}</Text>
               </View>
@@ -88,24 +92,6 @@ export default ({navigation, route}) => {
       />
     </BasicComponent>
   )
-}
-
-const checkIsLiked = async (tracks: Track[]): Promise<Track[]> => {
-  let _tracks: Track[] = JSON.parse(JSON.stringify(tracks))
-  let list = []
-  const len = Math.ceil(_tracks.length/50)
-  for(var i = 0; i < len; i++){
-    list.push(_tracks.splice(0, 50).map(item => item.id));
-  }
-  let responseList: boolean[] = [];
-  for(var listItem of list){
-    let likedTrack = await request({link: api.tracks_contains, method: "GET", body: {ids: listItem}});
-    if(likedTrack.success){
-      responseList = [...responseList, ...likedTrack.response];
-    }
-  }
-  let final = tracks.map((item, index) => ({...item, isFav: responseList[index]}));
-  return final;
 }
 
 const styles = StyleSheet.create({
@@ -145,5 +131,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "500",
     fontSize: 13
+  },
+  imagePlaylist: {
+    width: 20, 
+    height: 20, 
+    borderRadius: 10
+  },
+  contentContainerStyleFlatList: {
+    paddingBottom: 10
   }
 })

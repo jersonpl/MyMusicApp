@@ -27,7 +27,13 @@ export default ({navigation}) => {
         <FlatList 
           data = {tracks.items}
           keyExtractor={(item, index) => index}
-          renderItem = {({item, index})=> <TrackComponent key = {index} data = {item} addOrRemoveFav = {({track, isFav} : {track: Track, isFav: boolean})=> dispatch(addOrRemoveTrack({track, isFav, tracks}))} />}
+          renderItem = {({item, index})=> 
+            <TrackComponent 
+              key = {index} 
+              data = {item} 
+              addOrRemoveFav = {({track, isFav} : {track: Track, isFav: boolean})=> dispatch(addOrRemoveTrack({track, isFav, tracks}))} 
+            />
+          }
           onEndReached = {()=> {
             if(tracks.total > tracks.items.length) dispatch(changeTracksOffset({tracks, offset: tracks.items.length, navigation}))
           }}

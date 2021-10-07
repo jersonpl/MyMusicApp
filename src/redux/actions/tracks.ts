@@ -7,6 +7,12 @@ import { TrackReducer } from "../reducers/tracks.reducer"
 
 const localDB = new LocalDB();
 
+export interface inAddOrRemoveTrack {
+  track: Track 
+  tracks: TrackReducer
+  isFav: boolean
+}
+
 export const setTracks = (tracks: TrackReducer) => ({
   type : "saveTracks", 
   tracks
@@ -31,7 +37,7 @@ export const getTracks = ({navigation, tracks} : {navigation: any, tracks: Track
   }
 }
 
-export const addOrRemoveTrack = ({track, tracks, isFav} : {track: Track, tracks: TrackReducer, isFav}) => {
+export const addOrRemoveTrack = ({track, tracks, isFav} : inAddOrRemoveTrack) => {
   return (dispatch) => {
     let _tracks: Track[] = tracks.items;
     let total = tracks.total;
