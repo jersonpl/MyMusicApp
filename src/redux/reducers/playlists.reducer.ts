@@ -1,22 +1,22 @@
-import { Playlist } from "../../interfaces"
+import {Playlist} from '../../interfaces';
 
 export interface PlaylistReducer {
-  total: number
-  offset: number
-  items: Playlist[] 
+  total: number;
+  offset: number;
+  items: Playlist[];
 }
 
-const initialState: PlaylistReducer  = {
+const initialState: PlaylistReducer = {
   total: 0,
   offset: 0,
-  items: []
-}
+  items: [],
+};
 
-export default(state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'savePlaylists':
-      return action.playlists
+      return action.playlists;
     default:
-      return state
+      return state;
   }
-}
+};

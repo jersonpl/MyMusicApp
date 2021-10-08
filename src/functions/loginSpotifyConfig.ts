@@ -20,7 +20,7 @@ export const scopes = [
   'playlist-read-collaborative',
   'app-remote-control',
   'streaming',
-  'ugc-image-upload'
+  'ugc-image-upload',
 ];
 
 export default `${endpoint}?client_id=${clientID}&response_type=token&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&show_dialog=true`

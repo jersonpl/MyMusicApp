@@ -1,22 +1,22 @@
-import { Track } from "../../interfaces"
+import {Track} from '../../interfaces';
 
 export interface TrackReducer {
-  total: number
-  offset: number
-  items: Track[]
+  total: number;
+  offset: number;
+  items: Track[];
 }
 
 const initialState: TrackReducer = {
   total: 0,
   offset: 0,
-  items: []
-}
+  items: [],
+};
 
-export default(state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'saveTracks':
-      return action.tracks
+      return action.tracks;
     default:
-      return state
+      return state;
   }
-}
+};
