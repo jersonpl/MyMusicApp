@@ -37,6 +37,8 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
       <FlatList
         data={playlists.items}
         keyExtractor={(item, index) => index}
+        numColumns={2}
+        columnWrapperStyle={{flex: 1, justifyContent: "space-around"}}
         renderItem={({item, index}) => (
           <PlaylistComponent
             key={index}

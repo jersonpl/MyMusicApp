@@ -1,9 +1,13 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';;
-import FastImage from 'react-native-fast-image';;
-import {Playlist} from '../interfaces';;
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Playlist} from '../interfaces';
 import {Text} from './CustomBasic';
 import NoteIcon from '../assets/svg/note.svg';
+
+const {width} = Dimensions.get("screen");
+
+const widthItem = width / 2 - 20;
 
 interface Props {
   data: Playlist;
@@ -42,26 +46,22 @@ export default _Playlist;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    height: 70,
-    alignItems: 'center',
-    paddingHorizontal: 10,
+    width: widthItem,
+    marginBottom: 20,
   },
   imageContainer: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: widthItem,
+    height: widthItem,
     backgroundColor: 'rgb(40,40,40)',
   },
   image: {
-    width: 60,
-    height: 60,
+    width: widthItem,
+    height: widthItem,
   },
   titleContainer: {
     flex: 1,
-    marginLeft: 10,
-    justifyContent: 'space-around',
+    marginVertical: 10,
+    width: widthItem,
   },
   title: {
     color: 'white',
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
   },
   owner: {
     color: 'white',
-    marginTop: 10,
+    marginTop: 5,
   },
 });
