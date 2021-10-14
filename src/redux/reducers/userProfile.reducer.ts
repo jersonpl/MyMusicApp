@@ -1,22 +1,22 @@
-import { UserProfile } from "../../interfaces"
+import {UserProfile} from '../../interfaces';
 
 const initialState: UserProfile = {
-  id: "",
-  country: "",
-  display_name: "",
-  email: "",
+  id: '',
+  country: '',
+  display_name: '',
+  email: '',
   explicit_content: [],
   followers: {total: 0},
-  product: "",
+  product: '',
   images: [],
-  uri: ""
-}
+  uri: '',
+};
 
-export default(state: UserProfile = initialState, action) => {
+export default (state: UserProfile = initialState, action) => {
   switch (action.type) {
     case 'saveUserProfile':
-      return action.userProfile
+      return action.userProfile;
     default:
-      return state
+      return state;
   }
-}
+};

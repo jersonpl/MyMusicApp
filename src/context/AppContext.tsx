@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import {
     auth,
@@ -7,9 +8,7 @@ import {
     SpotifyRemoteApi,
     PlayerState,
     PlayerContext,
-    RepeatMode,
-    ContentItem,
-    SpotifyAuth
+    SpotifyAuth,
 } from 'react-native-spotify-remote';
 
 import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URL, SPOTIFY_TOKEN_SWAP_URL, SPOTIFY_TOKEN_REFRESH_URL } from '../values/constants';
@@ -18,7 +17,7 @@ interface AuthOptions {
     playURI?: string;
     showDialog?: boolean;
     autoConnect?: boolean;
-    authType?: ApiConfig["authType"]
+    authType?: ApiConfig['authType']
 }
 
 interface AppContextState {
@@ -46,14 +45,14 @@ const DefaultContext: AppContextProps = {
     endSession: noop,
     remote,
     auth,
-    setToken: noop
-}
+    setToken: noop,
+};
 
 const AppContext = React.createContext<AppContextProps>(DefaultContext);
 
 class AppContextProvider extends React.Component<{}, AppContextState> {
     state = {
-        isConnected: false
+        isConnected: false,
     }
 
     constructor(props: any) {
@@ -70,18 +69,18 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
     }
 
     componentDidMount() {
-        remote.on("remoteConnected", this.onConnected)
-            .on("remoteDisconnected", this.onDisconnected)
-            .on("playerStateChanged", this.onPlayerStateChanged)
-            .on("playerContextChanged", this.onPlayerContextChanged);
+        remote.on('remoteConnected', this.onConnected)
+            .on('remoteDisconnected', this.onDisconnected)
+            .on('playerStateChanged', this.onPlayerStateChanged)
+            .on('playerContextChanged', this.onPlayerContextChanged);
 
         auth.getSession().then((session) => {
-            if (session != undefined && session.accessToken != undefined) {
-                this.setState((state) => ({ ...state, token: session.accessToken }))
+            if (session !== undefined && session.accessToken !== undefined) {
+                this.setState((state) => ({ ...state, token: session.accessToken }));
                 remote.connect(session.accessToken)
                     .then(() => this.setState((state) => ({
                         ...state,
-                        isConnected: true
+                        isConnected: true,
                     })))
                     .catch(this.onError);
             }
@@ -93,7 +92,7 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
     }
 
     private onError(error: Error) {
-        this.setState((state) => ({ ...state, error }))
+        this.setState((state) => ({ ...state, error }));
     }
 
     private clearError() {
@@ -103,28 +102,28 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
     private onConnected() {
         this.setState((state) => ({
             ...state,
-            isConnected: true
+            isConnected: true,
         }));
     }
 
     private onDisconnected() {
         this.setState((state) => ({
             ...state,
-            isConnected: false
+            isConnected: false,
         }));
     }
 
     private onPlayerStateChanged(playerState: PlayerState) {
         this.setState((state) => ({
             ...state,
-            playerState
+            playerState,
         }));
     };
 
     private onPlayerContextChanged(playerContext: PlayerContext) {
         this.setState((state) => ({
             ...state,
-            playerContext
+            playerContext,
         }));
     };
 
@@ -137,7 +136,7 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
     }
 
     private async authenticate({ playURI, showDialog = false, authType }: AuthOptions = {}) {
-        console.log("ENTRO", {playURI, authType})
+        console.log('ENTRO', {playURI, authType})
         const config: ApiConfig = {
             clientID: SPOTIFY_CLIENT_ID,
             redirectURL: SPOTIFY_REDIRECT_URL,
@@ -146,24 +145,24 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
             scopes: [ApiScope.AppRemoteControlScope, ApiScope.UserLibraryModifyScope],
             playURI,
             showDialog,
-            authType
+            authType,
         };
 
         try {
             // Go and check if things are connected
-            const isConnected = await remote.isConnectedAsync()
-            console.log("isConnected => ", isConnected);
+            const isConnected = await remote.isConnectedAsync();
+            console.log('isConnected => ', isConnected);
             this.setState((state) => ({
                 ...state,
-                isConnected
+                isConnected,
             }));
 
             // Initialize the session
             const { accessToken: token } = await auth.authorize(config);
-            console.log({ token })
+            console.log({ token });
             this.setState((state) => ({
                 ...state,
-                token
+                token,
             }));
             await remote.connect(token);
         } catch (err) {
@@ -174,12 +173,12 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
     private setToken (token: string) {
         this.setState((state) => ({
             ...state,
-            token
+            token,
         }));
     }
 
     render() {
-        const { children } = this.props
+        const { children } = this.props;
         return (
             <AppContext.Provider
                 value={{
@@ -194,7 +193,7 @@ class AppContextProvider extends React.Component<{}, AppContextState> {
             >
                 {children}
             </AppContext.Provider>
-        )
+        );
     }
 }
 
