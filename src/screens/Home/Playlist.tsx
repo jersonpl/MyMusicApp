@@ -1,15 +1,9 @@
 import React from 'react';
-import {useEffect, useState} from 'react';;
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from 'react-native';
-import BasicComponent from '../../components/CustomBasic/BasicComponent';;
+import {useEffect, useState} from 'react';
+import {Dimensions, FlatList, Image, StyleSheet, View} from 'react-native';
+import BasicComponent from '../../components/CustomBasic/BasicComponent';
 import {Playlist} from '../../interfaces';
-import FastImage from 'react-native-fast-image';;
+import FastImage from 'react-native-fast-image';
 import NoteIcon from '../../assets/svg/note.svg';
 import {Text} from '../../components/CustomBasic';
 import colors from '../../values/colors';
@@ -69,7 +63,7 @@ export default ({navigation, route}: NativeStackScreenProps<{}>) => {
       prev.tracks.items![indexTrack].isFav = !isFav;
       return prev;
     });
-  };;
+  };
 
   return (
     <BasicComponent isLoading={isLoading}>

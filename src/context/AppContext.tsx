@@ -11,7 +11,12 @@ import {
     SpotifyAuth,
 } from 'react-native-spotify-remote';
 
-import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URL, SPOTIFY_TOKEN_SWAP_URL, SPOTIFY_TOKEN_REFRESH_URL } from '../values/constants';
+import {
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_REDIRECT_URL,
+  SPOTIFY_TOKEN_SWAP_URL,
+  SPOTIFY_TOKEN_REFRESH_URL,
+} from '../values/constants';
 
 interface AuthOptions {
     playURI?: string;
@@ -21,23 +26,23 @@ interface AuthOptions {
 }
 
 interface AppContextState {
-    error?: Error & { code?: any };
-    playerState?: PlayerState;
-    token?: string;
-    isConnected?: boolean;
+  error?: Error & {code?: any};
+  playerState?: PlayerState;
+  token?: string;
+  isConnected?: boolean;
 }
 
 export interface AppContextProps extends AppContextState {
-    onError: (err: Error) => void;
-    authenticate: (options?: AuthOptions) => void;
-    clearError: () => void;
-    endSession: () => void;
-    remote: SpotifyRemoteApi,
-    auth: SpotifyAuth,
-    setToken: (token: string) => void,
+  onError: (err: Error) => void;
+  authenticate: (options?: AuthOptions) => void;
+  clearError: () => void;
+  endSession: () => void;
+  remote: SpotifyRemoteApi;
+  auth: SpotifyAuth;
+  setToken: (token: string) => void;
 }
 
-const noop = () => { };
+const noop = () => {};
 const DefaultContext: AppContextProps = {
     onError: noop,
     authenticate: noop,

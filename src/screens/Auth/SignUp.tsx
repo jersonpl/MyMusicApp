@@ -5,7 +5,7 @@ import {Button, Input, Text} from '../../components/CustomBasic';
 import translate from '../../lang/translate';
 import colors from '../../values/colors';
 
-export default ({navigation}) => {
+export default () => {
   const [email, setEmail] = useState('');
 
   const onLogin = async () => {};

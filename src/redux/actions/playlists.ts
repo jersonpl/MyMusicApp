@@ -49,6 +49,8 @@ export const getPlaylists = ({
     } else {
       errorRequest({response: resPlaylists, navigation});
     }
-    onFinish();
+    if (onFinish) {
+      onFinish();
+    }
   };
 };
