@@ -1,15 +1,14 @@
+/**
+ * @format
+ */
+
+import 'react-native';
 import React from 'react';
-import {render} from '@testing-library/react-native';
-import Index from '../src/index';
+import App from '../App';
 
-let component: any;
+// Note: test renderer must be required after react-native.
+import renderer from 'react-test-renderer';
 
-describe('<App />', () => {
-  beforeEach(() => {
-    component = render(<Index />);
-  });
-
-  it('renderiza correctamenter', () => {
-    console.log(component);
-  });
+it('renders correctly', () => {
+  renderer.create(<App />);
 });
