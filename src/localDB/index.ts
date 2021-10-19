@@ -1,3 +1,4 @@
+/* eslint-disable no-labels */
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,14 +11,7 @@ export default class LocalDB {
     userProfile: `user-profile-${key}`,
   };
 
-  checkIfDate(value) {
-    if (!isNaN(Date.parse(value))) {
-      return Date.parse(value);
-    }
-    return value;
-  }
-
-  async saveData(table, data) {
+  async saveData(table: string, data: any) {
     try {
       if (typeof data !== 'object') {
         return {success: false, msg: 'Formato filtro incorrecto'};
@@ -62,7 +56,7 @@ export default class LocalDB {
   }
 
   //añadir ordenas {desc, asc} y quitar el sucess
-  async find(table, filter, qty, sort) {
+  async find(table: string, filter?: any, qty?: number) {
     try {
       let storage = await AsyncStorage.getItem(table);
       if (!storage) {
@@ -96,21 +90,6 @@ export default class LocalDB {
             }
           }
         }
-        if (sort) {
-          if (sort.desc) {
-            return dataTemp.sort(
-              (a, b) =>
-                this.checkIfDate(b[sort.desc]) - this.checkIfDate(a[sort.desc]),
-            );
-          } else {
-            return dataTemp.sort(
-              (a, b) =>
-                this.checkIfDate(a[sort.asc]) - this.checkIfDate(b[sort.asc]),
-            );
-          }
-        } else {
-          return dataTemp;
-        }
       }
     } catch (error) {
       console.log('ERROR LOCALDB find ', error);
@@ -118,10 +97,10 @@ export default class LocalDB {
     }
   }
 
-  async findOne(table, filter, data) {
+  async findOne(table: string, filter?: object) {
     try {
-      const data = await this.find(table, filter, 1);
-      if (data.length > 0) {
+      const data = (await this.find(table, filter, 1)) || [];
+      if (data.length) {
         return data[0];
       } else {
         return null;
@@ -132,7 +111,7 @@ export default class LocalDB {
     }
   }
 
-  async modifyOne(table, filter, data) {
+  async modifyOne(table: string, filter?: any, data?: object) {
     try {
       let _storage = await AsyncStorage.getItem(table);
       if (!_storage) {
@@ -143,7 +122,7 @@ export default class LocalDB {
 
       var itemModify = null;
 
-      storage.some(item => {
+      storage.some((item: any) => {
         var modify = true;
         for (var field in filter) {
           if (item[field] !== filter[field]) {
@@ -170,7 +149,7 @@ export default class LocalDB {
     }
   }
 
-  async delete(table, filter, qty) {
+  async delete(table: string, filter: any, qty?: number) {
     try {
       let _storage = await AsyncStorage.getItem(table);
       if (!_storage) {
@@ -184,7 +163,7 @@ export default class LocalDB {
         return {sucess: true};
       }
 
-      var dataToDelete = [];
+      var dataToDelete: any[] = [];
 
       loop: for (var item of storage) {
         var del = true;
@@ -202,7 +181,9 @@ export default class LocalDB {
         }
       }
 
-      var dataTemp = storage.filter(item => !dataToDelete.includes(item.id));
+      var dataTemp = storage.filter(
+        (item: any) => !dataToDelete.includes(item.id),
+      );
       await AsyncStorage.setItem(table, JSON.stringify(dataTemp));
       return {sucess: true};
     } catch (error) {

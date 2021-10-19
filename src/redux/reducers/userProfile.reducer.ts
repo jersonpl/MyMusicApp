@@ -1,4 +1,5 @@
 import {UserProfile} from '../../interfaces';
+import {ActionTypeUserProfile} from '../actions/userProfile';
 
 const initialState: UserProfile = {
   id: '',
@@ -12,7 +13,10 @@ const initialState: UserProfile = {
   uri: '',
 };
 
-export default (state: UserProfile = initialState, action) => {
+export default (
+  state: UserProfile = initialState,
+  action: ActionTypeUserProfile,
+) => {
   switch (action.type) {
     case 'saveUserProfile':
       return action.userProfile;

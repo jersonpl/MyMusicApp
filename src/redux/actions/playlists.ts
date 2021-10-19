@@ -3,7 +3,12 @@ import errorRequest from '../../utils/errorRequest';
 import request from '../../utils/request';
 import {PlaylistReducer} from '../reducers/playlists.reducer';
 
-export const setPlaylists = (playlists: PlaylistReducer) => ({
+export interface ActionTypePlaylist {
+  type: string;
+  playlists: PlaylistReducer;
+}
+
+export const setPlaylists = (playlists: PlaylistReducer): ActionPlaylist => ({
   type: 'savePlaylists',
   playlists,
 });

@@ -6,6 +6,11 @@ import request from '../../utils/request';
 
 const localDB = new LocalDB();
 
+export interface ActionTypeUserProfile {
+  type: string;
+  userProfile: UserProfile;
+}
+
 export const setUserProfile = (userProfile: UserProfile) => {
   return {type: 'saveUserProfile', userProfile};
 };

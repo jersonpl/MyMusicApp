@@ -4,6 +4,11 @@ import errorRequest from '../../utils/errorRequest';
 import request from '../../utils/request';
 import {TrackReducer} from '../reducers/tracks.reducer';
 
+export interface ActionTypeTracks {
+  type: string;
+  tracks: TrackReducer;
+}
+
 export interface inAddOrRemoveTrack {
   track: Track;
   tracks: TrackReducer;

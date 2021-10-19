@@ -29,25 +29,22 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
   return (
     <BasicComponent>
       <View style={styles.container}>
-        <View style={{alignItems: 'center'}}>
-          {userProfile.images && userProfile.images.length > 0 ? (
+        <View style={styles.header}>
+          {userProfile.images && userProfile.images.length ? (
             <FastImage
               source={{uri: userProfile.images[0].url}}
-              style={{width: 150, height: 150, borderRadius: 75}}
+              style={styles.image}
             />
           ) : (
-            <Image
-              source={no_photo_user}
-              style={{width: 150, height: 150, borderRadius: 75}}
-            />
+            <Image source={no_photo_user} style={styles.image} />
           )}
           <Text style={styles.nameText}>{userProfile.display_name}</Text>
           <Text style={styles.emailText}>{userProfile.email}</Text>
         </View>
         <Button
           title={translate('logout')}
-          buttonStyle={{backgroundColor: 'white', width: 150, height: 40}}
-          titleStyle={{color: 'black'}}
+          buttonStyle={styles.buttonStyle}
+          titleStyle={styles.titleStyle}
           onPress={onLogout}
         />
       </View>
@@ -63,6 +60,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
+  header: {
+    alignItems: 'center',
+  },
   nameText: {
     fontSize: 25,
     color: 'white',
@@ -75,5 +75,18 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 20,
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  buttonStyle: {
+    backgroundColor: 'white',
+    width: 150,
+    height: 40,
+  },
+  titleStyle: {
+    color: 'black',
   },
 });

@@ -1,4 +1,5 @@
 import {Track} from '../../interfaces';
+import {ActionTypeTracks} from '../actions/tracks';
 
 export interface TrackReducer {
   total: number;
@@ -12,7 +13,7 @@ const initialState: TrackReducer = {
   items: [],
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: ActionTypeTracks) => {
   switch (action.type) {
     case 'saveTracks':
       return action.tracks;

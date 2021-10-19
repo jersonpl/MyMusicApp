@@ -6,12 +6,13 @@ import colors from '../values/colors';
 import Logo from '../components/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import screenNames from './screenNames';
+import {StyleSheet} from 'react-native';
 
 export default ({route}: NativeStackScreenProps<{}>): any => ({
   tabBarIcon: ({focused}: {focused: boolean}) => {
     switch (route.name) {
       case screenNames.HomeStack:
-        return <Logo style={{width: 23, height: 23}} showWhite={!focused} />;
+        return <Logo style={styles().logo} showWhite={!focused} />;
       case screenNames.MyMusicStack:
         return (
           <Icon
@@ -32,14 +33,22 @@ export default ({route}: NativeStackScreenProps<{}>): any => ({
         name = translate('favs').toUpperCase();
         break;
     }
-    return (
-      <Text style={{fontSize: 10, color: focused ? colors.primary : 'white'}}>
-        {name}
-      </Text>
-    );
+    return <Text style={styles(focused).title}>{name}</Text>;
   },
   tabBarStyle: {
     backgroundColor: colors.secundary,
     bordborderColor: colors.secundary,
   },
 });
+
+const styles = (focused?: boolean) =>
+  StyleSheet.create({
+    title: {
+      fontSize: 10,
+      color: focused ? colors.primary : 'white',
+    },
+    logo: {
+      width: 23,
+      height: 23,
+    },
+  });

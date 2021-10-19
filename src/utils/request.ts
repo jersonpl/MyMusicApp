@@ -46,7 +46,7 @@ export default async ({
     requestOptions.headers.Authorization = `${auth.token_type} ${auth.access_token}`;
   }
 
-  console.log(requestOptions.headers.Authorization);
+  console.log(link);
 
   let resFetch = await fetch(link, requestOptions);
   if (resFetch.status === statusCode.NO_AUTH) {

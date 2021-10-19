@@ -1,4 +1,5 @@
 import {Playlist} from '../../interfaces';
+import { ActionTypePlaylist } from '../actions/playlists';
 
 export interface PlaylistReducer {
   total: number;
@@ -12,7 +13,7 @@ const initialState: PlaylistReducer = {
   items: [],
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: ActionTypePlaylist) => {
   switch (action.type) {
     case 'savePlaylists':
       return action.playlists;
