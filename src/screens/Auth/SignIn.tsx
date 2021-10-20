@@ -1,33 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import {Button, Input, Text} from '../../components/CustomBasic';
 import translate from '../../lang/translate';
 import colors from '../../values/colors';
 
-import {ApiConfig} from 'react-native-spotify-remote';
-import AppContext from '../../context/AppContext';
-
 export default () => {
-  const {token, authenticate, error, clearError} = useContext(AppContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-
-  const handleConnect = useCallback(
-    (playURI?: string, authType?: ApiConfig['authType']) => {
-      console.log({
-        playURI,
-        authType,
-      });
-      authenticate({
-        showDialog: false,
-        playURI,
-        authType,
-      });
-    },
-    [token],
-  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -74,14 +55,9 @@ export default () => {
             titleStyle={{color: 'black'}}
             disabledTitleStyle={{color: 'white'}}
             buttonStyle={{height: 50, width: 200, marginTop: 20}}
-            onPress={() => handleConnect()}
+            onPress={() => {}}
           />
         </View>
-        {error && (
-          <Text onPress={clearError} style={styles.error}>
-            {error.code}: {error.message}
-          </Text>
-        )}
       </View>
     </SafeAreaView>
   );

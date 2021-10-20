@@ -1,46 +1,26 @@
-import React, {useContext} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import AppContext from '../../context/AppContext';
-import {Button, Text} from '../../components/CustomBasic';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Button} from '../../components/CustomBasic';
 import BasicComponent from '../../components/CustomBasic/BasicComponent';
 import translate from '../../lang/translate';
 import LocalDB from '../../localDB';
 import {useSelector} from '../../redux/useSelector';
-import {UserProfile} from '../../interfaces';
-import FastImage from 'react-native-fast-image';
-import no_photo_user from '../../assets/images/no_photo_user.png';
-import screenNames from '../../navigation/screenNames';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import ViewProfile from '../../components/ViewProfile';
 
 const localDB = new LocalDB();
 
-export default ({navigation}: NativeStackScreenProps<{}>) => {
-  const [userProfile] = useSelector(
-    ({userProfile}: {userProfile: UserProfile}) => [userProfile],
-  );
-  const {endSession} = useContext(AppContext);
+export default ({navigation}: {navigation: any}) => {
+  const userProfile = useSelector(state => state.userProfile);
 
   const onLogout = async () => {
     await localDB.deleteAllDB();
-    endSession();
-    navigation.reset({index: 0, routes: [{name: screenNames.SignedOutStack}]});
+    navigation.reset({index: 0, routes: [{name: 'SignedOutStack'}]});
   };
 
   return (
     <BasicComponent>
       <View style={styles.container}>
-        <View style={styles.header}>
-          {userProfile.images && userProfile.images.length ? (
-            <FastImage
-              source={{uri: userProfile.images[0].url}}
-              style={styles.image}
-            />
-          ) : (
-            <Image source={no_photo_user} style={styles.image} />
-          )}
-          <Text style={styles.nameText}>{userProfile.display_name}</Text>
-          <Text style={styles.emailText}>{userProfile.email}</Text>
-        </View>
+        <ViewProfile userProfile={userProfile} />
         <Button
           title={translate('logout')}
           buttonStyle={styles.buttonStyle}
@@ -59,27 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 10,
-  },
-  header: {
-    alignItems: 'center',
-  },
-  nameText: {
-    fontSize: 25,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 40,
-  },
-  emailText: {
-    fontSize: 18,
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
   },
   buttonStyle: {
     backgroundColor: 'white',

@@ -3,13 +3,12 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 import colors from '../../values/colors';
 import IsLoading from '../IsLoading';
 
-export default ({
-  children,
-  isLoading,
-}: {
+type Props = {
   children?: any;
   isLoading?: boolean;
-}) => {
+};
+
+export default ({children, isLoading}: Props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>

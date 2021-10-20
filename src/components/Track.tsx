@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';;
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import colors from '../values/colors';
 import {Text} from './CustomBasic';

@@ -24,7 +24,7 @@ export default (keyword: string) => {
 };
 
 const getString = (keyword: string, languaje: string): string | null => {
-  const text = strings.find(item => item.key === keyword);
+  const text: any = strings.find(item => item.key === keyword);
   if (text) {
     return text[languaje];
   }

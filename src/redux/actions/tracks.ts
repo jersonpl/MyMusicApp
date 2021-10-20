@@ -12,7 +12,7 @@ export interface ActionTypeTracks {
 export interface inAddOrRemoveTrack {
   track: Track;
   tracks: TrackReducer;
-  isFav: boolean;
+  isFav?: boolean;
 }
 
 export const setTracks = (tracks: TrackReducer) => ({
@@ -29,7 +29,7 @@ export const changeTracksOffset = ({
   offset: number;
   navigation: any;
 }) => {
-  return dispatch => {
+  return (dispatch: any) => {
     let _tracks = {...tracks, offset};
     dispatch(getTracks({navigation, tracks: _tracks}));
   };
@@ -42,14 +42,14 @@ export const getTracks = ({
   navigation: any;
   tracks: TrackReducer;
 }) => {
-  return async dispatch => {
+  return async (dispatch: any) => {
     let resTracks = await request({
       link: api.tracks,
       method: 'GET',
       body: {offset: tracks.offset, limit: 30},
     });
     if (resTracks.success) {
-      let _tracks: Track[] = resTracks.response.items.map(item => ({
+      let _tracks: Track[] = resTracks.response.items.map((item: any) => ({
         ...item.track,
         isFav: true,
       }));
@@ -71,7 +71,7 @@ export const addOrRemoveTrack = ({
   tracks,
   isFav,
 }: inAddOrRemoveTrack) => {
-  return dispatch => {
+  return (dispatch: any) => {
     let _tracks: Track[] = tracks.items;
     let total = tracks.total;
     if (isFav) {

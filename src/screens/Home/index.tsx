@@ -1,23 +1,21 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useDispatch} from 'react-redux';
 import {Text} from '../../components/CustomBasic';
 import BasicComponent from '../../components/CustomBasic/BasicComponent';
 import PlaylistComponent from '../../components/Playlist';
 import translate from '../../lang/translate';
-import screenNames from '../../navigation/screenNames';
 import {
   changePlaylistsOffset,
   getPlaylists,
 } from '../../redux/actions/playlists';
-import {PlaylistReducer} from '../../redux/reducers/playlists.reducer';
+import {PropsHome} from '../../navigation/Stacks/HomeStack';
+import {useSelector} from '../../redux/useSelector';
 
-export default ({navigation}: NativeStackScreenProps<{}>) => {
+export default ({navigation}: {navigation: any}) => {
   const dispatch = useDispatch();
-  const [playlists] = useSelector(
-    ({playlists}: {playlists: PlaylistReducer}) => [playlists],
-  );
+  const playlists = useSelector(state => state.playlists);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -36,19 +34,14 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
       <Text style={styles.title}>{translate('your_library')}</Text>
       <FlatList
         data={playlists.items}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
         numColumns={2}
-        columnWrapperStyle={{flex: 1, justifyContent: "space-around"}}
+        columnWrapperStyle={{flex: 1, justifyContent: 'space-around'}}
         renderItem={({item, index}) => (
           <PlaylistComponent
             key={index}
             data={item}
-            onPress={() =>
-              navigation.navigate(
-                screenNames.Playlist as never,
-                {playlist: item} as never,
-              )
-            }
+            onPress={() => navigation.navigate('Playlist', {playlist: item})}
           />
         )}
         onEndReached={() => {

@@ -8,7 +8,9 @@ export interface ActionTypePlaylist {
   playlists: PlaylistReducer;
 }
 
-export const setPlaylists = (playlists: PlaylistReducer): ActionPlaylist => ({
+export const setPlaylists = (
+  playlists: PlaylistReducer,
+): ActionTypePlaylist => ({
   type: 'savePlaylists',
   playlists,
 });
@@ -22,7 +24,7 @@ export const changePlaylistsOffset = ({
   offset: number;
   navigation: any;
 }) => {
-  return dispatch => {
+  return (dispatch: any) => {
     let _playlists = {...playlists, offset};
     dispatch(getPlaylists({navigation, playlists: _playlists}));
   };
@@ -37,7 +39,7 @@ export const getPlaylists = ({
   playlists: PlaylistReducer;
   onFinish?: () => void;
 }) => {
-  return async dispatch => {
+  return async (dispatch: any) => {
     let resPlaylists = await request({
       link: api.playlists,
       method: 'GET',

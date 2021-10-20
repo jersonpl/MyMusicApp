@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Text} from '../../components/CustomBasic';
@@ -11,9 +11,9 @@ import {
   getTracks,
 } from '../../redux/actions/tracks';
 import {TrackReducer} from '../../redux/reducers/tracks.reducer';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {PropsMyMusic} from '../../navigation/Stacks/MyMusicStack';
 
-export default ({navigation}: NativeStackScreenProps<{}>) => {
+export default ({navigation}: PropsMyMusic) => {
   const dispatch = useDispatch();
   const [tracks] = useSelector(({tracks}: {tracks: TrackReducer}) => [tracks]);
 
@@ -31,7 +31,7 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
         </View>
         <FlatList
           data={tracks.items}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
             <TrackComponent
               key={index}

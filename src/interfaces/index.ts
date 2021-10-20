@@ -6,8 +6,8 @@ export interface Auth {
 
 export interface ImageUrl {
   url: string;
-  height: number;
-  width: number;
+  height: number | null;
+  width: number | null;
 }
 
 export interface UserProfile {
@@ -15,7 +15,6 @@ export interface UserProfile {
   country: string;
   display_name: string;
   email: string;
-  explicit_content: (string | boolean)[];
   followers: {total: number};
   product: string;
   images?: ImageUrl[];
@@ -55,7 +54,7 @@ export interface Playlist {
   owner: UserProfile;
   images: ImageUrl[];
   tracks: {href: string; total: number; items?: Track[]};
-  collaborative: number;
+  collaborative: boolean;
   uri: string;
   href: string;
   followers?: {total: number};

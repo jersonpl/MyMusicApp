@@ -19,15 +19,15 @@ import {useDispatch} from 'react-redux';
 import constants from '../../values/constants';
 import checkIfTrackIsLiked from '../../functions/checkIfTrackIsLiked';
 import formatPlaylist from '../../functions/formatPlaylist';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {PropsPlaylist} from '../../navigation/Stacks/HomeStack';
 
 const {width} = Dimensions.get('screen');
 
-export default ({navigation, route}: NativeStackScreenProps<{}>) => {
+export default ({navigation, route}: PropsPlaylist) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [tracks] = useSelector(({tracks}) => [tracks]);
-  const [playList, setPlayList] = useState<Playlist>(route.params!.playlist);
+  const [playList, setPlayList] = useState<Playlist>(route.params.playlist);
 
   useEffect(() => {
     init();
@@ -65,11 +65,15 @@ export default ({navigation, route}: NativeStackScreenProps<{}>) => {
     });
   };
 
+  if (playList.tracks.items?.length) {
+    console.log(JSON.stringify(playList.tracks.items![0]));
+  }
+
   return (
     <BasicComponent isLoading={isLoading}>
       <FlatList
         data={playList.tracks.items || []}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item, index}) => (
           <TrackComponent
             key={index}

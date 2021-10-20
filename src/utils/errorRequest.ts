@@ -1,6 +1,5 @@
 import Snackbar from 'react-native-snackbar';
 import LocalDB from '../localDB';
-import screenNames from '../navigation/screenNames';
 import colors from '../values/colors';
 import {resFetch} from './request';
 
@@ -22,7 +21,7 @@ export default async ({
       });
     }, 500);
     await localDB.deleteAllDB();
-    navigation.reset({index: 0, routes: [{name: screenNames.SignedOutStack}]});
+    navigation.reset({index: 0, routes: [{name: 'SignedOutStack'}]});
   } else {
     setTimeout(() => {
       Snackbar.show({

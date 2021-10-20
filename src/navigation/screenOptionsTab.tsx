@@ -5,15 +5,14 @@ import translate from '../lang/translate';
 import colors from '../values/colors';
 import Logo from '../components/Logo';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import screenNames from './screenNames';
 import {StyleSheet} from 'react-native';
 
 export default ({route}: NativeStackScreenProps<{}>): any => ({
   tabBarIcon: ({focused}: {focused: boolean}) => {
     switch (route.name) {
-      case screenNames.HomeStack:
+      case 'HomeStack':
         return <Logo style={styles().logo} showWhite={!focused} />;
-      case screenNames.MyMusicStack:
+      case 'MyMusicStack':
         return (
           <Icon
             name="folder-music"
@@ -26,10 +25,10 @@ export default ({route}: NativeStackScreenProps<{}>): any => ({
   title: ({focused}: {focused: boolean}) => {
     var name = '';
     switch (route.name) {
-      case screenNames.HomeStack:
+      case 'HomeStack':
         name = translate('titleApp').toUpperCase();
         break;
-      case screenNames.MyMusicStack:
+      case 'MyMusicStack':
         name = translate('favs').toUpperCase();
         break;
     }

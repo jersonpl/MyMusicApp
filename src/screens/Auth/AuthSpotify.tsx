@@ -9,12 +9,10 @@ import {Auth} from '../../interfaces';
 import IsLoading from '../../components/IsLoading';
 import {useDispatch} from 'react-redux';
 import {getUserProfile} from '../../redux/actions/userProfile';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import screenNames from '../../navigation/screenNames';
 
 const localDB = new LocalDB();
 
-export default ({navigation}: NativeStackScreenProps<{}>) => {
+export default ({navigation}: {navigation: any}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,13 +22,17 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
     const url = navigationState.url;
 
     const params = parseURLParams(url);
+    console.log({params});
     if (params.access_token) {
       setIsLoading(true);
       await localDB.saveData(localDB.tables.auth, params);
-      dispatch(getUserProfile({navigation}));
-      navigation.reset({index: 0, routes: [{name: screenNames.SignedInStack}]});
-      setIsLoading(false);
+      dispatch(getUserProfile({navigation, onFinish}));
     }
+  };
+
+  const onFinish = () => {
+    navigation.reset({index: 0, routes: [{name: 'SignedInStack'}]});
+    setIsLoading(false);
   };
 
   if (isLoading) {

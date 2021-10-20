@@ -1,4 +1,3 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
   SafeAreaView,
@@ -10,10 +9,11 @@ import {
 import {Button, Text} from '../../components/CustomBasic';
 import Logo from '../../components/Logo';
 import translate from '../../lang/translate';
-import screenNames from '../../navigation/screenNames';
+import {PropsAuth} from '../../navigation/Stacks/SignedOutStack';
 import colors from '../../values/colors';
+import SignIn from './SignIn';
 
-export default ({navigation}: NativeStackScreenProps<{}>) => {
+export default ({navigation}: {navigation: any}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" />
@@ -25,11 +25,11 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
           <Button
             title={translate('register_free')}
             titleStyle={styles.buttonRegisterFree}
-            onPress={() => navigation.navigate(screenNames.SignUp as never)}
+            onPress={() => navigation.navigate('SignUp')}
           />
           <TouchableOpacity
             style={styles.textLoginContainer}
-            onPress={() => navigation.navigate(screenNames.SignIn as never)}>
+            onPress={() => navigation.navigate('SignIn')}>
             <Text style={styles.textLogin}>{translate('login')}</Text>
           </TouchableOpacity>
         </View>
