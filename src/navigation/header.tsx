@@ -2,6 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import colors from '../values/colors';
+import screenNames from './screenNames';
 
 export default ({
   navigation,
@@ -25,7 +26,7 @@ export default ({
         name="settings-outline"
         type="ionicon"
         color="white"
-        onPress={() => navigation.navigate('Settings')}
+        onPress={() => navigation.navigate(screenNames.Settings) as never}
       />
     </View>
   ),

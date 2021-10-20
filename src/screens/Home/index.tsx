@@ -44,7 +44,10 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
             key={index}
             data={item}
             onPress={() =>
-              navigation.navigate(screenNames.Playlist, {playlist: item})
+              navigation.navigate(
+                screenNames.Playlist as never,
+                {playlist: item} as never,
+              )
             }
           />
         )}

@@ -97,7 +97,7 @@ export default class LocalDB {
     }
   }
 
-  async findOne(table: string, filter?: object) {
+  async findOne(table: string, filter?: object): Promise<any> {
     try {
       const data = (await this.find(table, filter, 1)) || [];
       if (data.length) {

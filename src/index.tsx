@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
+import {Auth} from './interfaces';
 import LocalDB from './localDB';
 import {NavigationRoot} from './navigation';
 import {getUserProfile} from './redux/actions/userProfile';
@@ -15,7 +16,7 @@ export default () => {
   }, []);
 
   const init = async () => {
-    let auth = await localDB.findOne(localDB.tables.auth);
+    let auth: Auth | null = await localDB.findOne(localDB.tables.auth);
     if (auth && auth.access_token) {
       dispatch(getUserProfile({}));
       setLog(prev => ({...prev, verifySesion: true, log: true}));

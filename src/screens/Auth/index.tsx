@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
   SafeAreaView,
@@ -24,12 +24,12 @@ export default ({navigation}: NativeStackScreenProps<{}>) => {
         <View style={styles.body}>
           <Button
             title={translate('register_free')}
-            titleStyle={{color: 'black'}}
-            onPress={() => navigation.navigate(screenNames.SignUp)}
+            titleStyle={styles.buttonRegisterFree}
+            onPress={() => navigation.navigate(screenNames.SignUp as never)}
           />
           <TouchableOpacity
             style={styles.textLoginContainer}
-            onPress={() => navigation.navigate(screenNames.SignIn)}>
+            onPress={() => navigation.navigate(screenNames.SignIn as never)}>
             <Text style={styles.textLogin}>{translate('login')}</Text>
           </TouchableOpacity>
         </View>
@@ -65,4 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  buttonRegisterFree: {
+    color: 'black',
+  }
 });
