@@ -35,7 +35,7 @@ export default ({navigation, route}: PropsPlaylist) => {
 
   const init = async () => {
     setIsLoading(true);
-    let resPlayList = await request({link: playList.href});
+    let resPlayList = await request({link: playList.href, body: {limit: 2}, method: "GET"});
     if (resPlayList.success) {
       const reformedPlaylist = formatPlaylist(resPlayList.response);
       setPlayList(reformedPlaylist);
@@ -64,10 +64,6 @@ export default ({navigation, route}: PropsPlaylist) => {
       return prev;
     });
   };
-
-  if (playList.tracks.items?.length) {
-    console.log(JSON.stringify(playList.tracks.items![0]));
-  }
 
   return (
     <BasicComponent isLoading={isLoading}>

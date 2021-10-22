@@ -1,16 +1,17 @@
 import React from 'react';
-import {View, Image, ViewStyle, StyleSheet} from 'react-native';
-import logo from '../assets/logo.png';
+import {View, ViewStyle, StyleSheet} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import logo_white from '../assets/logo_white.png';
+import logo from '../assets/logo.png';
 
-interface Props {
+type Props = {
   style?: ViewStyle;
   showWhite?: boolean;
-}
+};
 
 export default ({style, showWhite}: Props) => (
   <View style={[styles.container, style]}>
-    <Image source={!showWhite ? logo : logo_white} style={styles.image} />
+    <FastImage source={showWhite ? logo_white : logo} style={styles.image} />
   </View>
 );
 

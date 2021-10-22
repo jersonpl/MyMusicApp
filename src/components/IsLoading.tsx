@@ -2,7 +2,7 @@ import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import colors from '../values/colors';
 
-export default ({visible}: {visible: boolean}) =>
+export default ({visible}: {visible?: boolean}) =>
   !visible ? null : (
     <View style={styles.container}>
       <ActivityIndicator size="large" color={colors.primary} />
